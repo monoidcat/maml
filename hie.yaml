@@ -1,0 +1,10 @@
+cradle:
+  cabal:
+    - path: "src"
+      component: "lib:maml"
+
+    - path: "app/Main.hs"
+      component: "maml:exe:maml"
+
+    - path: "test"
+      component: "maml:test:maml-test"
