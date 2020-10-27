@@ -1,4 +1,4 @@
-NAME := chomsky
+NAME := maml
 GHCID = cabal exec ghcid -- --allow-eval --command='cabal repl lib:$(NAME)'
 SRC := src/ \
 		hie.yaml \
@@ -16,7 +16,7 @@ lib: $(SRC)
 	@cabal build lib:$(NAME)
 
 run: $(SRC) app/
-	@cabal run exe:$(NAME) -- test/example.chk
+	@cabal run exe:$(NAME) -- test/example.maml
 
 /app: $(SRC) app/
 	@GHCID --setup=':load Main' --command='cabal repl exe:$(NAME)'
