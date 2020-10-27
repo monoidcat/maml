@@ -1,0 +1,172 @@
+{
+    "extensions": [    "BlockArguments",
+                       "BangPatterns",
+                       "ConstraintKinds",
+                       "DataKinds",
+                       "DefaultSignatures",
+                       "DeriveGeneric",
+                       "DeriveTraversable",
+                       "DerivingStrategies",
+                       "DerivingVia",
+                       "EmptyDataDecls",
+                       "ExtendedDefaultRules",
+                       "FlexibleContexts",
+                       "FlexibleInstances",
+                       "FunctionalDependencies",
+                       "GADTs",
+                       "GeneralizedNewtypeDeriving",
+                       "InstanceSigs",
+                       "LambdaCase",
+                       "LiberalTypeSynonyms",
+                       "MultiParamTypeClasses",
+                       "MultiWayIf",
+                       "NamedFieldPuns",
+                       "NamedWildCards",
+                       "NoMonomorphismRestriction",
+                       "OverloadedStrings",
+                       "PackageImports",
+                       "PatternSynonyms",
+                       "QuantifiedConstraints",
+                       "RankNTypes",
+                       "RecordWildCards",
+                       "RoleAnnotations",
+                       "ScopedTypeVariables",
+                       "StandaloneDeriving",
+                       "TupleSections",
+                       "TypeApplications",
+                       "TypeFamilyDependencies",
+                       "TypeOperators",
+                       "ViewPatterns"
+],
+    "fixities": [],
+    "formatting": {
+        "op": {
+            ",": {
+                "force-linebreak": false,
+                "spaces": "after",
+                "linebreaks": "before"
+            },
+            ":": {
+                "force-linebreak": false,
+                "spaces": "none",
+                "linebreaks": "before"
+            },
+            "=": {
+                "force-linebreak": false,
+                "spaces": "both",
+                "linebreaks": "after"
+            },
+            "default": {
+                "force-linebreak": false,
+                "spaces": "both",
+                "linebreaks": "before"
+            },
+            ". in expression": {
+                "force-linebreak": false,
+                "spaces": "both",
+                "linebreaks": "before"
+            },
+            ". in type": {
+                "force-linebreak": false,
+                "spaces": "none",
+                "linebreaks": "after"
+            },
+            "record": {
+                "force-linebreak": true,
+                "spaces": "after",
+                "linebreaks": "none"
+            }
+        },
+        "group": {
+            "(": {
+                "force-linebreak": false,
+                "spaces": "none",
+                "linebreaks": "after"
+            },
+            "(# in pattern": {
+                "force-linebreak": false,
+                "spaces": "both",
+                "linebreaks": "none"
+            },
+            "default": {
+                "force-linebreak": false,
+                "spaces": "none",
+                "linebreaks": "none"
+            },
+            "{": {
+                "force-linebreak": false,
+                "spaces": "both",
+                "linebreaks": "after"
+            },
+            "(# in expression": {
+                "force-linebreak": false,
+                "spaces": "both",
+                "linebreaks": "none"
+            }
+        },
+        "layout": {
+            "infix-app": "flex",
+            "if": "vertical",
+            "import-spec-list": "flex",
+            "con-decls": "vertical",
+            "declaration": "flex",
+            "app": "flex",
+            "let": "vertical",
+            "record": "vertical",
+            "type": "try-oneline",
+            "export-spec-list": "vertical",
+            "list-comp": "vertical"
+
+        },
+        "penalty": {
+            "overfull": 10,
+            "indent": 1,
+            "overfull-once": 100,
+            "max-line-length": 80,
+            "linebreak": 80
+        },
+        "indent": {
+            "deriving": 2,
+            "if": "align",
+            "let-binds": "align",
+            "import-spec-list": "align",
+            "onside": 2,
+            "where": 2,
+            "typesig": "align",
+            "do": "indent-by 2",
+            "app": "indent-by 2",
+            "case": "align",
+            "let-in": "align",
+            "where-binds": "indent-by 2",
+            "let": "align",
+            "export-spec-list": "align",
+            "multi-if": "indent-by 2",
+            "class": "indent-by 2"
+        },
+        "align": {
+            "let-binds": true,
+            "where": true,
+            "matches": true,
+            "limits": [
+                10,
+                25
+            ],
+            "case": true,
+            "import-module": true,
+            "import-spec": true,
+            "class": true,
+            "record-fields": true
+        },
+        "options": {
+            "sort-pragmas": true,
+            "flexible-oneline": true,
+            "decl-no-blank-lines": [],
+            "split-language-pragmas": false,
+            "align-sum-type-decl": true,
+            "sort-import-lists": true,
+            "preserve-vertical-space": true,
+            "sort-imports": true
+        }
+    },
+    "language": "Haskell2010"
+}
