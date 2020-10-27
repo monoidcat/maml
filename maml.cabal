@@ -21,6 +21,7 @@ source-repository head
 
 common common-options
   build-depends:       base ^>= 4.14.1.0
+                     , text
   
   ghc-options:         -Wall
                        -Wcompat
@@ -81,6 +82,7 @@ common common-options
 library
   import:              common-options
   hs-source-dirs:      src
+  build-depends:       megaparsec
   exposed-modules:     Maml
 
 executable maml
