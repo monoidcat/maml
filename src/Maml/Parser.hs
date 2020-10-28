@@ -1,6 +1,5 @@
 module Maml.Parser ( lineComment
                    , blockComment
-                   , scn
                    , sc
                    , lexeme
                    , symbol
@@ -19,7 +18,6 @@ module Maml.Parser ( lineComment
                    , parseTest -- TODO: Remove
                    ) where
 
-import           Control.Monad
 import           Control.Monad.Combinators.Expr
 
 import           Data.Text                      (Text)
@@ -40,14 +38,8 @@ lineComment = empty
 blockComment :: Parser ()
 blockComment = L.skipBlockCommentNested "{#" "#}"
 
-scn :: Parser ()
-scn = L.space space1 lineComment blockComment
-
 sc :: Parser ()
-sc = L.space (void p) lineComment blockComment
-  where
-    p :: Parser [ Char ]
-    p = some $ choice [char ' ', tab]
+sc = L.space space1 lineComment blockComment
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
@@ -74,36 +66,51 @@ pName p = T.pack <$> some p <> many charset
     charset = choice [alphaNumChar, char '_']
 
 pVarId :: Parser Name
-pVarId = label "Variable Name" . lexeme $ pName lowerChar
+pVarId = label "Variable Name" p
+  where
+    p :: Parser Name
+    p = lexeme (pName lowerChar)
 
 pTypeId :: Parser Name
-pTypeId = label "Type Name" . lexeme $ pName upperChar
+pTypeId = label "Type Name" p
+  where
+    p :: Parser Name
+    p = lexeme (pName upperChar)
 
 pProgId :: Parser [ Name ]
-pProgId = label "Program Id" . lexeme $ progId `sepBy1` char '.'
+pProgId = label "Program Id" p
   where
+    p :: Parser [ Name ]
+    p = lexeme (progId `sepBy1` char '.')
+
     progId :: Parser Name
     progId = pName upperChar
 
 pProgram :: Parser Program
-pProgram = Program <$> progName <*> decl
+pProgram = Program <$> progName <*> decl <* eof
   where
     progName :: Parser [ Name ]
-    progName = L.nonIndented scn (char '@' *> pProgId)
+    progName = L.nonIndented sc (char '@' *> pProgId)
 
     decl :: Parser [ Decl ]
-    decl = L.nonIndented scn (many pDecl)
+    decl = L.nonIndented sc (many pDecl)
 
 pDecl :: Parser Decl
 pDecl = choice [pVarDecl]
 
 pVarDecl :: Parser Decl
-pVarDecl = Var <$> pVarId <* symbol ":" <*> pTypeExpr <?> "Variable Declaration"
+pVarDecl = label "Variable Declaration" p
+  where
+    p :: Parser Decl
+    p = Var <$> pVarId <* symbol ":" <*> pTypeExpr
 
 pTypeExpr :: Parser TypeExpr
-pTypeExpr = makeExprParser term table <?> "Type Expression"
+pTypeExpr = label "Type Expression" (makeExprParser term table)
   where
     term :: Parser TypeExpr
-    term = choice [TypeId <$> pTypeId] <?> "Type Term"
+    term = label "Type Term" (choice [typeId])
+
+    typeId :: Parser TypeExpr
+    typeId = TypeId <$> pTypeId
 
     table = [[]]
