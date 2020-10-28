@@ -1,15 +1,6 @@
-{- |
-Copyright: (c) 2020 Arturas Lebedevas
-SPDX-License-Identifier: MIT
-Maintainer: Arturas Lebedevas <monoidcat@gmail.com>
+module Maml ( module Types
+            , module Parser
+            ) where
 
-See README for more info
--}
-
-module Maml
-       ( someFunc
-       ) where
-
-
-someFunc :: IO ()
-someFunc = putStrLn ("someFunc" :: String)
+import           Maml.Parser as Parser
+import           Maml.Types  as Types
