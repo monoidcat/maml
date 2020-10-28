@@ -15,7 +15,10 @@ hie.yaml:
 lib: $(SRC)
 	@cabal build lib:$(NAME)
 
-run: $(SRC) app/
+parse: $(SRC) app/
+	@cabal run exe:$(NAME) -- parse test/example.maml
+
+ast: $(SRC) app/
 	@cabal run exe:$(NAME) -- ast test/example.maml
 
 /app: $(SRC) app/
@@ -31,4 +34,4 @@ clean:
 	@cabal clean
 	@rm -rf ./dist ./dist-newstyle
 
-.PHONY: default build lib run clean /lib /app /test
+.PHONY: default build lib parse ast clean /lib /app /test

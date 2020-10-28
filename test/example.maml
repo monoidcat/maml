@@ -3,12 +3,30 @@
 
 @Test.Example
 
+{# There are three major components of an ML system:
+  - Data
+  - Model
+  - Inference:
+    - Training algorithm
+    - Predicition algorithm
+
+  We will discuss each one of them as we go.
+#}
+
 {# Inductive data types with (SMT) constraints.
+
+  These shall provide us with the data model.
+  Not to confuse with the data or model as stated above!
+
+  A data model here means schema of data with the addition of constraints. Such
+  constraints are necessary to establish consistency in data and establish
+  business rules. At the end of the day, it is the model of data, but we will
+  get back to this at later point. For now, just think of it as schema.
 
   Questions:
     - How these relate to HITs?
     - Can we use them as (weak?) homotopy types?
-  #}
+#}
 
 data HR : {
   id        : Nat
@@ -18,5 +36,4 @@ data HR : {
   longitude : Real
   age       : Nat
   salary    : Real
-  succ      : HR
 }
