@@ -7,6 +7,10 @@ module Maml.Parser ( lineComment
                    , parens
                    , curly
                    , brackets
+                   , nat
+                   , int
+                   , real
+                   , pLit
                    , pName
                    , pVarId
                    , pTypeId
@@ -59,11 +63,23 @@ curly = between (symbol "{") (symbol "}")
 brackets :: Parser a -> Parser a
 brackets = between (symbol "[") (symbol "]")
 
+nat :: Parser Integer
+nat = label "Natural Number" (lexeme L.decimal)
+
+int :: Parser Integer
+int = label "Integer" (L.signed sc nat)
+
+real :: Parser Double
+real = label "Real Number" (L.signed sc $ lexeme L.float)
+
 pName :: Parser Char -> Parser Name
-pName p = T.pack <$> some p <> many charset
+pName p = T.pack <$> some p <> many charset <> many suffix
   where
     charset :: Parser Char
     charset = choice [alphaNumChar, char '_']
+
+    suffix :: Parser Char
+    suffix = choice [char '\'', char '?', char '!']
 
 pVarId :: Parser Name
 pVarId = label "Variable Name" p
@@ -96,21 +112,45 @@ pProgram = Program <$> progName <*> decl <* eof
     decl = L.nonIndented sc (many pDecl)
 
 pDecl :: Parser Decl
-pDecl = choice [pVarDecl]
+
+pDecl = choice [try pRndDecl, try pDataDecl, pSetDecl, pVarDecl]
 
 pVarDecl :: Parser Decl
 pVarDecl = label "Variable Declaration" p
   where
     p :: Parser Decl
-    p = Var <$> pVarId <* symbol ":" <*> pTypeExpr
+    p = VarDecl <$> pVarId <* symbol ":" <*> pTypeExpr <*> optional
+      (symbol ":=" *> pTypeExpr)
 
-pTypeExpr :: Parser TypeExpr
+pSetDecl :: Parser Decl
+pSetDecl = label "Set Declaration" p
+  where
+    p :: Parser Decl
+    p = SetDecl <$> pTypeId <* symbol ":=" <*> pTypeExpr
+
+pRndDecl :: Parser Decl
+pRndDecl = label "Random Variable Declaration" p
+  where
+    p :: Parser Decl
+    p = RndDecl <$> pTypeId <* symbol "~" <*> pTypeExpr
+
+pDataDecl :: Parser Decl
+pDataDecl = Data <$> (keyword "data" *> pTypeId)
+  <*> (symbol ":" *> curly (many pVarDecl))
+
+pTypeExpr :: Parser Expr
 pTypeExpr = label "Type Expression" (makeExprParser term table)
   where
-    term :: Parser TypeExpr
-    term = label "Type Term" (choice [typeId])
+    term :: Parser Expr
+    term = label "Type Term" (choice [lit, typeId])
 
-    typeId :: Parser TypeExpr
+    typeId :: Parser Expr
     typeId = TypeId <$> pTypeId
 
+    lit :: Parser Expr
+    lit = Lit <$> pLit
+
     table = [[]]
+
+pLit :: Parser Literal
+pLit = choice [try $ R <$> real, N <$> nat, Z <$> int]

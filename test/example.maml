@@ -1,10 +1,22 @@
-{#
-   This is an example of multi-line comment.
+{# This is an example of multi-line comment.
+   Note: There are no single-line comments! #}
 
-   Note: There are no single-line comments!
-#}
-
-{# This is a namespace definition #}
 @Test.Example
 
-x : Nat  {# this is a variable inside the namespace #}
+{# Inductive data types with (SMT) constraints.
+
+  Questions:
+    - How these relate to HITs?
+    - Can we use them as (weak?) homotopy types?
+  #}
+
+data HR : {
+  id        : Nat
+  genderID  : Int
+  degree    : Nat
+  latitude  : Real
+  longitude : Real
+  age       : Nat
+  salary    : Real
+  succ      : HR
+}

@@ -23,6 +23,7 @@ common common-options
   build-depends:       base ^>= 4.14.1.0
                      , text
                      , pretty-simple
+                     , bytestring
   
   ghc-options:         -Wall
                        -Wcompat
