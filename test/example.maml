@@ -1,0 +1,10 @@
+{#
+   This is an example of multi-line comment.
+
+   Note: There are no single-line comments!
+#}
+
+{# This is a namespace definition #}
+@Test.Example
+
+x : Nat  {# this is a variable inside the namespace #}

@@ -16,7 +16,7 @@ lib: $(SRC)
 	@cabal build lib:$(NAME)
 
 run: $(SRC) app/
-	@cabal run exe:$(NAME) -- test/example.maml
+	@cabal run exe:$(NAME) -- ast test/example.maml
 
 /app: $(SRC) app/
 	@GHCID --setup=':load Main' --command='cabal repl exe:$(NAME)'
