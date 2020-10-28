@@ -22,6 +22,7 @@ source-repository head
 common common-options
   build-depends:       base ^>= 4.14.1.0
                      , text
+                     , pretty-simple
   
   ghc-options:         -Wall
                        -Wcompat
@@ -83,13 +84,18 @@ library
   import:              common-options
   hs-source-dirs:      src
   build-depends:       megaparsec
+                     , parser-combinators
   exposed-modules:     Maml
+                     , Maml.Types
+                     , Maml.Parser
 
 executable maml
   import:              common-options
   hs-source-dirs:      app
   main-is:             Main.hs
   build-depends:       maml
+                     , optparse-generic
+                     , optparse-applicative
   ghc-options:         -threaded
                        -rtsopts
                        -with-rtsopts=-N
