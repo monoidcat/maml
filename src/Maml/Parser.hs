@@ -6,9 +6,11 @@ module Maml.Parser ( blockComment
                    , parens
                    , curly
                    , brackets
-                   , nat
-                   , int
-                   , real
+                   , natLit
+                   , intLit
+                   , realLit
+                   , charLit
+                   , textLit
                    , pLit
                    , pName
                    , pVarId
@@ -61,14 +63,26 @@ curly = between (symbol "{") (symbol "}")
 brackets :: Parser a -> Parser a
 brackets = between (symbol "[") (symbol "]")
 
-nat :: Parser Integer
-nat = label "Natural Number" (lexeme L.decimal)
+natLit :: Parser Integer
+natLit = label "Natural Number" (lexeme L.decimal)
 
-int :: Parser Integer
-int = label "Integer" (L.signed sc nat)
+intLit :: Parser Integer
+intLit = label "Integer" (L.signed sc natLit)
 
-real :: Parser Double
-real = label "Real Number" (L.signed sc $ lexeme L.float)
+realLit :: Parser Double
+realLit = label "Real Number" (L.signed sc $ lexeme L.float)
+
+charLit :: Parser Char
+charLit = label "Character" p
+  where
+    p :: Parser Char
+    p = between (char '\'') (char '\'') L.charLiteral
+
+textLit :: Parser Text
+textLit = label "Text" p
+  where
+    p :: Parser Text
+    p = T.pack <$> (char '\"' *> manyTill L.charLiteral (char '\"'))
 
 pName :: Parser Char -> Parser Name
 pName p = T.pack <$> some p <> many charset <> many suffix
@@ -137,4 +151,8 @@ pTypeExpr = label "Type Expression" (makeExprParser term table)
     table = [[]]
 
 pLit :: Parser Literal
-pLit = choice [try $ R <$> real, N <$> nat, Z <$> int]
+pLit = choice [ try (R <$> realLit)
+              , N <$> natLit
+              , Z <$> intLit
+              , Char <$> charLit
+              , Text <$> textLit]
