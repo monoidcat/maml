@@ -36,7 +36,7 @@ data Literal
   = Int Integer
   | Real Double
   | Char Char
-  | String Text
+  | String String
   deriving (Eq, Show)
 
 makeBaseFunctor ''Expr

@@ -94,6 +94,7 @@ library
                      , Maml.Parser
                      , Maml.Parser.Types
                      , Maml.Parser.Literal
+                     , Maml.Solver
                      , Maml.SQL
 
 executable maml

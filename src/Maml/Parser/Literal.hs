@@ -5,9 +5,6 @@ module Maml.Parser.Literal ( pLit
                            , stringLit
                            ) where
 
-import           Data.Text                  (Text)
-import qualified Data.Text                  as T
-
 import           Maml.Parser.Types
 import           Maml.Types
 
@@ -34,8 +31,8 @@ charLit = label "Character" p
     p :: Parser Char
     p = between (char '\'') (char '\'') L.charLiteral
 
-stringLit :: Parser Text
+stringLit :: Parser String
 stringLit = label "String" p
   where
-    p :: Parser Text
-    p = T.pack <$> (char '\"' *> manyTill L.charLiteral (char '\"'))
+    p :: Parser String
+    p = (char '\"' *> manyTill L.charLiteral (char '\"'))
