@@ -61,6 +61,7 @@ common common-options
                        LambdaCase
                        LiberalTypeSynonyms
                        MultiWayIf
+                       MultiParamTypeClasses
                        NamedFieldPuns
                        NamedWildCards
                        NoMonomorphismRestriction
@@ -86,9 +87,11 @@ library
   hs-source-dirs:      src
   build-depends:       megaparsec
                      , parser-combinators
+                     , recursion-schemes
   exposed-modules:     Maml
                      , Maml.Types
                      , Maml.Parser
+                     , Maml.SQL
 
 executable maml
   import:              common-options

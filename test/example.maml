@@ -20,16 +20,19 @@
 
   A data model here means schema of data with the addition of constraints. Such
   constraints are necessary to establish consistency in data and establish
-  business rules. At the end of the day, it is the model of data, but we will
-  get back to this at later point. For now, just think of it as schema.
+  business rules (a.k.a. domain knowledge). At the end of the day, it is the
+  model of data, but we will get back to this at later point. For now, just
+  think of it as schema.
 
   Questions:
     - How these relate to HITs?
     - Can we use them as (weak?) homotopy types?
 #}
 
+{# Numerical data should be carefully considered for units, scaling, and
+  constraints #}
+
 data HR : {
-  id        : Nat
   genderID  : Int
   degree    : Nat
   latitude  : Real
@@ -37,3 +40,5 @@ data HR : {
   age       : Nat
   salary    : Real
 }
+
+{# Note that `HR` represents a 6-dimensional vector #}

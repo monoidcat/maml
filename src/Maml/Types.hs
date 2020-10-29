@@ -1,30 +1,27 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Maml.Types ( Name
-                  , Block
                   , Program(..)
-                  , Decl(..)
+                  , ProgramF(..)
+                  , Def(..)
+                  , DefF(..)
                   , Expr(..)
-                  , Data(..)
+                  , ExprF(..)
                   , Literal(..)
                   ) where
 
-import           Data.ByteString (ByteString)
-import           Data.Text       (Text)
+import           Data.ByteString          (ByteString)
+import           Data.Functor.Foldable.TH
+import           Data.Text                (Text)
 
 type Name = Text
 
-type Block = Text
-
-data Program = Program [ Name ] [ Decl ]
+data Program = Program [ Name ] [ Def ]
   deriving stock (Eq, Show)
 
-data Decl
-  = VarDecl Name Expr (Maybe Expr)
-  | SetDecl Name Expr
-  | RndDecl Name Expr
-  | Data Name [ Decl ]
-  deriving (Eq, Show)
-
-data Data = Type Name Expr
+data Def
+  = DefVar Name Expr
+  | DefData Name [ Def ]
   deriving (Eq, Show)
 
 data Expr
@@ -41,3 +38,9 @@ data Literal
   | String ByteString
   | Text Text
   deriving (Eq, Show)
+
+makeBaseFunctor ''Program
+
+makeBaseFunctor ''Def
+
+makeBaseFunctor ''Expr

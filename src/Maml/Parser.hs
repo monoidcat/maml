@@ -1,5 +1,4 @@
-module Maml.Parser ( lineComment
-                   , blockComment
+module Maml.Parser ( blockComment
                    , sc
                    , lexeme
                    , symbol
@@ -16,7 +15,9 @@ module Maml.Parser ( lineComment
                    , pTypeId
                    , pProgId
                    , pProgram
-                   , pDecl
+                   , pDef
+                   , pDefVar
+                   , pDefData
                    , pTypeExpr
                    , parse
                    , parseTest -- TODO: Remove
@@ -36,14 +37,11 @@ import qualified Text.Megaparsec.Char.Lexer     as L
 
 type Parser = Parsec Void Text
 
-lineComment :: Parser ()
-lineComment = empty
-
 blockComment :: Parser ()
 blockComment = L.skipBlockCommentNested "{#" "#}"
 
 sc :: Parser ()
-sc = L.space space1 lineComment blockComment
+sc = L.space space1 empty blockComment
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
@@ -108,35 +106,21 @@ pProgram = Program <$> progName <*> decl <* eof
     progName :: Parser [ Name ]
     progName = L.nonIndented sc (char '@' *> pProgId)
 
-    decl :: Parser [ Decl ]
-    decl = L.nonIndented sc (many pDecl)
+    decl :: Parser [ Def ]
+    decl = L.nonIndented sc (many pDef)
 
-pDecl :: Parser Decl
+pDef :: Parser Def
+pDef = choice [try pDefData, pDefVar]
 
-pDecl = choice [try pRndDecl, try pDataDecl, pSetDecl, pVarDecl]
-
-pVarDecl :: Parser Decl
-pVarDecl = label "Variable Declaration" p
+pDefVar :: Parser Def
+pDefVar = label "Variable Declaration" p
   where
-    p :: Parser Decl
-    p = VarDecl <$> pVarId <* symbol ":" <*> pTypeExpr <*> optional
-      (symbol ":=" *> pTypeExpr)
+    p :: Parser Def
+    p = DefVar <$> pVarId <* symbol ":" <*> pTypeExpr
 
-pSetDecl :: Parser Decl
-pSetDecl = label "Set Declaration" p
-  where
-    p :: Parser Decl
-    p = SetDecl <$> pTypeId <* symbol ":=" <*> pTypeExpr
-
-pRndDecl :: Parser Decl
-pRndDecl = label "Random Variable Declaration" p
-  where
-    p :: Parser Decl
-    p = RndDecl <$> pTypeId <* symbol "~" <*> pTypeExpr
-
-pDataDecl :: Parser Decl
-pDataDecl = Data <$> (keyword "data" *> pTypeId)
-  <*> (symbol ":" *> curly (many pVarDecl))
+pDefData :: Parser Def
+pDefData = DefData <$> (keyword "data" *> pTypeId)
+  <*> (symbol ":" *> curly (many pDef))
 
 pTypeExpr :: Parser Expr
 pTypeExpr = label "Type Expression" (makeExprParser term table)
