@@ -1,9 +1,8 @@
 module Maml.Parser.Literal ( pLit
-                           , natLit
                            , intLit
                            , realLit
                            , charLit
-                           , textLit
+                           , stringLit
                            ) where
 
 import           Data.Text                  (Text)
@@ -17,17 +16,13 @@ import           Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
 pLit :: Parser Literal
-pLit = choice [ try (R <$> realLit)
-              , N <$> natLit
-              , Z <$> intLit
+pLit = choice [ try (Real <$> realLit)
+              , Int <$> intLit
               , Char <$> charLit
-              , Text <$> textLit]
-
-natLit :: Parser Integer
-natLit = label "Natural Number" (lexeme L.decimal)
+              , String <$> stringLit]
 
 intLit :: Parser Integer
-intLit = label "Integer" (L.signed sc natLit)
+intLit = label "Integer" (L.signed sc L.decimal)
 
 realLit :: Parser Double
 realLit = label "Real Number" (L.signed sc $ lexeme L.float)
@@ -38,8 +33,8 @@ charLit = label "Character" p
     p :: Parser Char
     p = between (char '\'') (char '\'') L.charLiteral
 
-textLit :: Parser Text
-textLit = label "Text" p
+stringLit :: Parser Text
+stringLit = label "Text" p
   where
     p :: Parser Text
     p = T.pack <$> (char '\"' *> manyTill L.charLiteral (char '\"'))
