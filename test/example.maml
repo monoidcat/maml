@@ -42,6 +42,6 @@ data HR : {
   salary    : Real
 }
 
-x : Int{= 10}{= 11}
+x : Int{= 9 + 1}
 
 {# Note that `HR` represents a 6-dimensional vector #}
