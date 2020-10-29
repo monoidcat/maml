@@ -1,118 +1,18 @@
-module Maml.Parser ( blockComment
-                   , sc
-                   , lexeme
-                   , symbol
-                   , keyword
-                   , parens
-                   , curly
-                   , brackets
-                   , natLit
-                   , intLit
-                   , realLit
-                   , charLit
-                   , textLit
-                   , pLit
-                   , pName
-                   , pVarId
-                   , pTypeId
-                   , pProgId
-                   , pProgram
-                   , pDef
-                   , pDefVar
-                   , pDefData
-                   , pTypeExpr
+module Maml.Parser ( module Maml.Parser
+                   , module Parser
                    , parse
                    , parseTest -- TODO: Remove
                    ) where
 
 import           Control.Monad.Combinators.Expr
 
-import           Data.Text                      (Text)
-import qualified Data.Text                      as T
-import           Data.Void
-
+import           Maml.Parser.Literal            as Parser
+import           Maml.Parser.Types              as Parser
 import           Maml.Types
 
 import           Text.Megaparsec
 import           Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer     as L
-
-type Parser = Parsec Void Text
-
-blockComment :: Parser ()
-blockComment = L.skipBlockCommentNested "{#" "#}"
-
-sc :: Parser ()
-sc = L.space space1 empty blockComment
-
-lexeme :: Parser a -> Parser a
-lexeme = L.lexeme sc
-
-symbol :: Text -> Parser Text
-symbol = L.symbol sc
-
-keyword :: Text -> Parser Text
-keyword k = string k <* space1
-
-parens :: Parser a -> Parser a
-parens = between (symbol "(") (symbol ")")
-
-curly :: Parser a -> Parser a
-curly = between (symbol "{") (symbol "}")
-
-brackets :: Parser a -> Parser a
-brackets = between (symbol "[") (symbol "]")
-
-natLit :: Parser Integer
-natLit = label "Natural Number" (lexeme L.decimal)
-
-intLit :: Parser Integer
-intLit = label "Integer" (L.signed sc natLit)
-
-realLit :: Parser Double
-realLit = label "Real Number" (L.signed sc $ lexeme L.float)
-
-charLit :: Parser Char
-charLit = label "Character" p
-  where
-    p :: Parser Char
-    p = between (char '\'') (char '\'') L.charLiteral
-
-textLit :: Parser Text
-textLit = label "Text" p
-  where
-    p :: Parser Text
-    p = T.pack <$> (char '\"' *> manyTill L.charLiteral (char '\"'))
-
-pName :: Parser Char -> Parser Name
-pName p = T.pack <$> some p <> many charset <> many suffix
-  where
-    charset :: Parser Char
-    charset = choice [alphaNumChar, char '_']
-
-    suffix :: Parser Char
-    suffix = choice [char '\'', char '?', char '!']
-
-pVarId :: Parser Name
-pVarId = label "Variable Name" p
-  where
-    p :: Parser Name
-    p = lexeme (pName lowerChar)
-
-pTypeId :: Parser Name
-pTypeId = label "Type Name" p
-  where
-    p :: Parser Name
-    p = lexeme (pName upperChar)
-
-pProgId :: Parser [ Name ]
-pProgId = label "Program Id" p
-  where
-    p :: Parser [ Name ]
-    p = lexeme (progId `sepBy1` char '.')
-
-    progId :: Parser Name
-    progId = pName upperChar
 
 pProgram :: Parser Program
 pProgram = Program <$> progName <*> decl <* eof
@@ -149,10 +49,3 @@ pTypeExpr = label "Type Expression" (makeExprParser term table)
     lit = Lit <$> pLit
 
     table = [[]]
-
-pLit :: Parser Literal
-pLit = choice [ try (R <$> realLit)
-              , N <$> natLit
-              , Z <$> intLit
-              , Char <$> charLit
-              , Text <$> textLit]

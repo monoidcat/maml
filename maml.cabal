@@ -91,6 +91,8 @@ library
   exposed-modules:     Maml
                      , Maml.Types
                      , Maml.Parser
+                     , Maml.Parser.Types
+                     , Maml.Parser.Literal
                      , Maml.SQL
 
 executable maml
