@@ -4,7 +4,7 @@ module Maml.Types ( module Maml.Types
                   ) where
 
 import           Data.Functor.Foldable.TH
-import           Data.Text (Text)
+import           Data.Text                (Text)
 
 type Name = Text
 
@@ -16,7 +16,7 @@ data Def
   | DefData Name [ Def ]
   deriving (Eq, Show)
 
-data TypeExpr = Type Name (Maybe TypeCons)
+data TypeExpr = Type Name [ TypeCons ]
   deriving (Eq, Show)
 
 data TypeCons = Eq Expr

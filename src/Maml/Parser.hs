@@ -43,7 +43,7 @@ pTypeExpr = label "type expression" p
     p = choice [typeName]
 
     typeName :: Parser TypeExpr
-    typeName = Type <$> pTypeId <*> optional (curly pTypeCons)
+    typeName = Type <$> pTypeId <*> many (curly pTypeCons)
 
 pTypeCons :: Parser TypeCons
 pTypeCons = Eq <$> (symbol "=" *> pExpr)
@@ -60,4 +60,5 @@ pExpr = makeExprParser term ops
     var :: Parser Expr
     var = Var <$> pVarId
 
+    ops :: [ [ Operator Parser Expr ] ]
     ops = [[]]

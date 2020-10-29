@@ -16,10 +16,11 @@ import           Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
 pLit :: Parser Literal
-pLit = choice [ try (Real <$> realLit)
-              , Int <$> intLit
-              , Char <$> charLit
-              , String <$> stringLit]
+pLit = lexeme $ choice
+  [ try (Real <$> realLit)
+  , Int <$> intLit
+  , Char <$> charLit
+  , String <$> stringLit]
 
 intLit :: Parser Integer
 intLit = label "Integer" (L.signed sc L.decimal)
@@ -34,7 +35,7 @@ charLit = label "Character" p
     p = between (char '\'') (char '\'') L.charLiteral
 
 stringLit :: Parser Text
-stringLit = label "Text" p
+stringLit = label "String" p
   where
     p :: Parser Text
     p = T.pack <$> (char '\"' *> manyTill L.charLiteral (char '\"'))
