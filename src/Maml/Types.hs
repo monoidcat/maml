@@ -25,6 +25,7 @@ data TypeCons = Eq Expr
 data Expr
   = Var Name
   | Lit Literal
+  | Neg Expr
   | Add Expr Expr
   | Sub Expr Expr
   | Mul Expr Expr

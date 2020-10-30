@@ -61,6 +61,7 @@ pExpr = makeExprParser term ops
     var = Var <$> pVarId
 
     ops :: [ [ Operator Parser Expr ] ]
-    ops = [ [binary "^" Pow]
+    ops = [ [prefix "-" Neg]
+          , [binary "^" Pow]
           , [binary "*" Mul, binary "/" Div]
           , [binary "+" Add, binary "-" Sub]]
