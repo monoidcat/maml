@@ -3,6 +3,19 @@
 
 @Test.Example
 
+{###################################################}
+{################# Introduction ####################}
+{###################################################}
+
+{# Here k belongs to a singleton set#}
+k : Int{= 10}
+
+inc :  (x : Int) -> (y : Int{= x + 1})
+
+{#################################################}
+{############ Basic Machine Learning #############}
+{#################################################}
+
 {# There are three major components of an ML system:
   - Data
   - Model
@@ -33,18 +46,14 @@
   constraints #}
 
 
-{# data HR : {
+data HR : {
   genderID  : Int
   degree    : Nat
   latitude  : Real
   longitude : Real
   age       : Nat
   salary    : Real
-} #}
+}
 
-{# This means that for all x, there exists y ... #}
-
-inc :  (x : Int)
-    -> (y : Int{= x + 1})
 
 {# Note that `HR` represents a 6-dimensional vector #}
