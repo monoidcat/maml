@@ -69,5 +69,11 @@ pProgId = label "Program Id" p
     progId :: Parser Name
     progId = pName upperChar
 
-binary :: Text -> (Expr -> Expr -> Expr) -> Operator Parser Expr
+prefix :: Text -> (a -> a) -> Operator Parser a
+prefix name f = Prefix (f <$ symbol name)
+
+postfix :: Text -> (a -> a) -> Operator Parser a
+postfix name f = Postfix (f <$ symbol name)
+
+binary :: Text -> (a -> a -> a) -> Operator Parser a
 binary name f = InfixL (f <$ symbol name)
