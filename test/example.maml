@@ -3,15 +3,35 @@
 
 @Test.Example
 
-{###################################################}
-{################# Introduction ####################}
-{###################################################}
+{###################################################
+ ################# Introduction ####################
+ ###################################################}
 
-{# Here k belongs to a singleton set#}
+{# Here k belongs to a singleton set, i.e. it says that k is a member of a set
+  that has 10 as its only member.
+
+  Note:
+  This is a constraint on the set of all integers (i.e. a subset), not a
+  value assignment! Hence why it's singleton.
+#}
 k : Int{= 10}
 
+{# A variable of product type (or equivalently, member of cartesian product) #}
+prod : Int * Real
+
 {# Example of increment function #}
-inc :  (x : Int) -> (y : Int{= x + 1})
+inc : (x : Int) -> (y : Int{= x + 1})
+
+{# Example of named products to do "funky" stuff like so: #}
+named_prod : (experience : Int) * (salary : Real{= 10 * experience / 2})
+
+{# Note: the above example is isomorphic to its dual - the exponential type
+  (a.k.a. function)
+#}
+exp_prod : (experience : Int) -> (salary : Real{= 10 * experience / 2})
+
+{# TODO: Handle intersections #}
+
 
 {#################################################}
 {############ Basic Machine Learning #############}
