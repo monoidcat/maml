@@ -19,6 +19,7 @@ data Def
 data TypeExpr
   = Type Name [ TypeCons ]
   | Arrow TypeExpr TypeExpr
+  | Prod TypeExpr TypeExpr
   deriving (Eq, Show)
 
 data TypeCons = Eq Expr
