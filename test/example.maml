@@ -10,6 +10,7 @@
 {# Here k belongs to a singleton set#}
 k : Int{= 10}
 
+{# Example of increment function #}
 inc :  (x : Int) -> (y : Int{= x + 1})
 
 {#################################################}
