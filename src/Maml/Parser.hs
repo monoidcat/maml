@@ -37,13 +37,16 @@ pDefData = DefData <$> (keyword "data" *> pTypeId)
   <*> (symbol ":" *> curly (many pDefVar))
 
 pTypeExpr :: Parser TypeExpr
-pTypeExpr = label "type expression" p
+pTypeExpr = makeExprParser term ops
   where
-    p :: Parser TypeExpr
-    p = choice [typeName]
+    term :: Parser TypeExpr
+    term = choice [parens pTypeExpr, typeName]
 
     typeName :: Parser TypeExpr
     typeName = Type <$> pTypeId <*> many (curly pTypeCons)
+
+    ops :: [ [ Operator Parser TypeExpr ] ]
+    ops = [[binary "->" Arrow]]
 
 pTypeCons :: Parser TypeCons
 pTypeCons = Eq <$> (symbol "=" *> pExpr)

@@ -16,7 +16,9 @@ data Def
   | DefData Name [ Def ]
   deriving (Eq, Show)
 
-data TypeExpr = Type Name [ TypeCons ]
+data TypeExpr
+  = Type Name [ TypeCons ]
+  | Arrow TypeExpr TypeExpr
   deriving (Eq, Show)
 
 data TypeCons = Eq Expr
@@ -39,5 +41,9 @@ data Literal
   | Char Char
   | String String
   deriving (Eq, Show)
+
+makeBaseFunctor ''TypeExpr
+
+makeBaseFunctor ''TypeCons
 
 makeBaseFunctor ''Expr
