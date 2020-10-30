@@ -40,13 +40,16 @@ pTypeExpr :: Parser TypeExpr
 pTypeExpr = makeExprParser term ops
   where
     term :: Parser TypeExpr
-    term = choice [parens pTypeExpr, typeName]
+    term = choice [try (parens pTypeExpr), pBind, typeName]
 
     typeName :: Parser TypeExpr
     typeName = Type <$> pTypeId <*> many (curly pTypeCons)
 
     ops :: [ [ Operator Parser TypeExpr ] ]
     ops = [[binary "*" Prod], [binary "+" Sum], [binary "->" Arrow]]
+
+pBind :: Parser TypeExpr
+pBind = parens $ Bind <$> pVarId <* symbol ":" <*> pTypeExpr
 
 pTypeCons :: Parser TypeCons
 pTypeCons = Eq <$> (symbol "=" *> pExpr)

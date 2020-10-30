@@ -21,6 +21,7 @@ data TypeExpr
   | Arrow TypeExpr TypeExpr
   | Prod TypeExpr TypeExpr
   | Sum TypeExpr TypeExpr
+  | Bind Name TypeExpr
   deriving (Eq, Show)
 
 data TypeCons = Eq Expr

@@ -33,15 +33,18 @@
   constraints #}
 
 
-data HR : {
+{# data HR : {
   genderID  : Int
   degree    : Nat
   latitude  : Real
   longitude : Real
   age       : Nat
   salary    : Real
-}
+} #}
 
-x : (Int) + (Real) * Int -> Real
+{# This means that for all x, there exists y ... #}
+
+inc :  (x : Int)
+    -> (y : Int{= x + 1})
 
 {# Note that `HR` represents a 6-dimensional vector #}
