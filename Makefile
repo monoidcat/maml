@@ -1,7 +1,6 @@
 NAME := maml
 GHCID = cabal exec ghcid -- --allow-eval --command='cabal repl lib:$(NAME)'
 SRC := src/ \
-		hie.yaml \
 		$(NAME).cabal
 
 default: build
@@ -9,7 +8,7 @@ default: build
 build: $(SRC) app/
 	@cabal build
 
-hie.yaml:
+hie.yaml: $(SRC)
 	@gen-hie > hie.yaml
 
 lib: $(SRC)
