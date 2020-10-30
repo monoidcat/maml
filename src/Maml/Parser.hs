@@ -46,7 +46,7 @@ pTypeExpr = makeExprParser term ops
     typeName = Type <$> pTypeId <*> many (curly pTypeCons)
 
     ops :: [ [ Operator Parser TypeExpr ] ]
-    ops = [[binary "*" Prod], [binary "->" Arrow]]
+    ops = [[binary "*" Prod], [binary "+" Sum], [binary "->" Arrow]]
 
 pTypeCons :: Parser TypeCons
 pTypeCons = Eq <$> (symbol "=" *> pExpr)
