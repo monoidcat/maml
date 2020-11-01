@@ -66,7 +66,10 @@ pExpr :: Parser Expr
 pExpr = makeExprParser term ops
   where
     term :: Parser Expr
-    term = choice [parens pExpr, var, lit]
+    term = choice [parens pExpr, it, var, lit]
+
+    it :: Parser Expr
+    it = It <$> (char '_' *> pVarId)
 
     lit :: Parser Expr
     lit = Lit <$> pLit

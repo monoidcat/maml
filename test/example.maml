@@ -31,11 +31,27 @@ named_prod : (experience : Int) * (salary : Real{= 10 * experience / 2})
 exp_prod : (experience : Int) -> (salary : Real{= 10 * experience / 2})
 
 {# Assignment of even numbers to each natural number #}
-
 even_n : (n : Int{>= 0}) -> Int{= 2 * n}
 
-{# Set comprehension #}
+{# Every functions dual is a table #}
+even_n_prod : (n : Int{>= 0}) * Int{= 2 * n}
 
+{# Even Set #}
+even : Int{= 2 * _x }
+
+{# Set comprehension
+
+{# Elements of `Set` are other sets #}
+{# We avoid Set in Set paradox by cumulative Set #}
+
+{## So  #}
+
+type A : Set{}
+
+A := {x : Int. 2 * x | x >= 0 }
+Unit := {}
+unit := ()
+#}
 {# TODO: Handle intersections #}
 
 

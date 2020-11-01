@@ -34,6 +34,7 @@ data TypeCons
 
 data Expr
   = Var Name
+  | It Name
   | Lit Literal
   | Neg Expr
   | Add Expr Expr
