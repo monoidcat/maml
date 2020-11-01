@@ -51,8 +51,16 @@ pTypeExpr = makeExprParser term ops
 pBind :: Parser TypeExpr
 pBind = parens $ Bind <$> pVarId <* symbol ":" <*> pTypeExpr
 
+cons :: Name -> (Expr -> TypeCons) -> Parser TypeCons
+cons name f = f <$> (symbol name *> pExpr)
+
 pTypeCons :: Parser TypeCons
-pTypeCons = Eq <$> (symbol "=" *> pExpr)
+pTypeCons = choice
+  [ cons "=" Eq
+  , try $ cons "<=" Lteq
+  , cons "<" Lt
+  , try $ cons ">=" Gteq
+  , cons ">" Gt]
 
 pExpr :: Parser Expr
 pExpr = makeExprParser term ops

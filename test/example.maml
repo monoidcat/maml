@@ -30,6 +30,12 @@ named_prod : (experience : Int) * (salary : Real{= 10 * experience / 2})
 #}
 exp_prod : (experience : Int) -> (salary : Real{= 10 * experience / 2})
 
+{# Assignment of even numbers to each natural number #}
+
+even_n : (n : Int{>= 0}) -> Int{= 2 * n}
+
+{# Set comprehension #}
+
 {# TODO: Handle intersections #}
 
 

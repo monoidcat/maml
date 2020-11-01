@@ -24,7 +24,12 @@ data TypeExpr
   | Bind Name TypeExpr
   deriving (Eq, Show)
 
-data TypeCons = Eq Expr
+data TypeCons
+  = Eq Expr
+  | Gt Expr
+  | Lt Expr
+  | Gteq Expr
+  | Lteq Expr
   deriving (Eq, Show)
 
 data Expr
