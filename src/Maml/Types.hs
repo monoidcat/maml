@@ -8,40 +8,50 @@ import           Data.Text                (Text)
 
 type Name = Text
 
-data Program = Program [ Name ] [ Def ]
+type Prog = Program Name
+
+type Decl = Def Name
+
+type TExpr = TypeExpr Name
+
+type CExpr = Expr Name
+
+type TCons = TypeCons Name
+
+data Program a = Program [ Name ] [ Def a ]
   deriving stock (Eq, Show)
 
-data Def
-  = DefVar Name TypeExpr
-  | DefData Name [ Def ]
+data Def a
+  = DefVar Name (TypeExpr a)
+  | DefData Name [ Def a ]
   deriving (Eq, Show)
 
-data TypeExpr
-  = Type Name [ TypeCons ]
-  | Arrow TypeExpr TypeExpr
-  | Prod TypeExpr TypeExpr
-  | Sum TypeExpr TypeExpr
-  | Bind Name TypeExpr
+data TypeExpr a
+  = Type a [ TypeCons a ]
+  | Arrow (TypeExpr a) (TypeExpr a)
+  | Prod (TypeExpr a) (TypeExpr a)
+  | Sum (TypeExpr a) (TypeExpr a)
+  | Bind Name (TypeExpr a)
   deriving (Eq, Show)
 
-data TypeCons
-  = Eq Expr
-  | Gt Expr
-  | Lt Expr
-  | Gteq Expr
-  | Lteq Expr
+data TypeCons a
+  = Eq (Expr a)
+  | Gt (Expr a)
+  | Lt (Expr a)
+  | Gteq (Expr a)
+  | Lteq (Expr a)
   deriving (Eq, Show)
 
-data Expr
-  = Var Name
-  | It Name
+data Expr a
+  = Var a
+  | It a
   | Lit Literal
-  | Neg Expr
-  | Add Expr Expr
-  | Sub Expr Expr
-  | Mul Expr Expr
-  | Div Expr Expr
-  | Pow Expr Expr
+  | Neg (Expr a)
+  | Add (Expr a) (Expr a)
+  | Sub (Expr a) (Expr a)
+  | Mul (Expr a) (Expr a)
+  | Div (Expr a) (Expr a)
+  | Pow (Expr a) (Expr a)
   deriving (Eq, Show)
 
 data Literal
