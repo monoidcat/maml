@@ -49,7 +49,7 @@ pTypeExpr = makeExprParser term ops
     ops = [[binary "*" Prod], [binary "+" Sum], [binary "->" Arrow]]
 
 pBind :: Parser TExpr
-pBind = parens $ Bind <$> pVarId <* symbol ":" <*> pTypeExpr
+pBind = curly $ Bind <$> pVarId <* symbol ":" <*> pTypeExpr
 
 cons :: Name -> (CExpr -> TCons) -> Parser TCons
 cons name f = f <$> (symbol name *> pExpr)

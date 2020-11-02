@@ -24,6 +24,7 @@ data Program a = Program [ Name ] [ Def a ]
 data Def a
   = DefVar Name (TypeExpr a)
   | DefData Name [ Def a ]
+  | DefType Name (TypeExpr a)
   deriving (Eq, Show)
 
 data TypeExpr a
@@ -32,6 +33,7 @@ data TypeExpr a
   | Prod (TypeExpr a) (TypeExpr a)
   | Sum (TypeExpr a) (TypeExpr a)
   | Bind Name (TypeExpr a)
+  | Comp [ Def a ] (Expr a)
   deriving (Eq, Show)
 
 data TypeCons a

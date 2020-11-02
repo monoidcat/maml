@@ -20,24 +20,27 @@ k : Int{= 10}
 prod : Int * Real
 
 {# Example of increment function #}
-inc : (x : Int) -> (y : Int{= x + 1})
+inc : {x : Int} -> {y : Int{= x + 1}}
 
 {# Example of named products to do "funky" stuff like so: #}
-named_prod : (experience : Int) * (salary : Real{= 10 * experience / 2})
+named_prod : {experience : Int} * {salary : Real{= 10 * experience / 2}}
 
 {# Note: the above example is isomorphic to its dual - the exponential type
   (a.k.a. function)
 #}
-exp_prod : (experience : Int) -> (salary : Real{= 10 * experience / 2})
+exp_prod : {experience : Int} -> {salary : Real{= 10 * experience / 2}}
 
 {# Assignment of even numbers to each natural number #}
-even_n : (n : Int{>= 0}) -> Int{= 2 * n}
+even_n : {n : Int{>= 0}} -> Int{= 2 * n}
 
-{# Every functions dual is a table #}
-even_n_prod : (n : Int{>= 0}) * Int{= 2 * n}
+{# Every functions is a table #}
+even_n_prod : {n : Int{>= 0}} * Int{= 2 * n}
 
 {# Even Set #}
 even : Int{= 2 * _x }
+
+{## To refer to Set of even number defined above, simply do this #}
+positive_even : Even{> 0}
 
 {# Set comprehension
 
